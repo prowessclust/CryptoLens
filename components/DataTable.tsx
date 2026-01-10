@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -9,7 +8,6 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
-import React from 'react';
 
 const DataTable = <T,>({
   columns,
@@ -29,7 +27,7 @@ const DataTable = <T,>({
           {columns.map((column, i) => (
             <TableHead
               key={i}
-              className={cn('bg-dark-400 text-purple-100 py-4 first:pl-5 last:pr-5')}
+              className={cn('bg-dark-400 text-purple-100 py-4 first:pl-5 last:pr-5', headerCellClassName)}
             >
               {column.header}
             </TableHead>
@@ -48,7 +46,7 @@ const DataTable = <T,>({
             {columns.map((column, columnIndex) => (
               <TableCell
                 key={columnIndex}
-                className={cn('py-4 first:pl-5 last:pr-5', bodyCellClassName)}
+                className={cn('py-4 first:pl-5 last:pr-5',column.cellClassName,  bodyCellClassName)}
               >
                 {column.cell(row, rowIndex)}
               </TableCell>

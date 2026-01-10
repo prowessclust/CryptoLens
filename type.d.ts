@@ -56,7 +56,7 @@ interface CoinMarketData {
   market_cap_change_percentage_24h: number;
   circulating_supply: number;
   total_supply: number;
-  max_supply: number;
+  max_supply: number | null;
   ath: number;
   ath_change_percentage: number;
   ath_date: string;
