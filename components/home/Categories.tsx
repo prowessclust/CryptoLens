@@ -18,7 +18,7 @@ const Categories = async () => {
       {
         header: 'Top Gainers',
         cellClassName: 'top-gainers-cell',
-        cell:(category) => category.top_3_coins?.map((coin) => <Image src={coin} alt={coin} key={coin} width={28} height={28} />)
+        cell:(category) => category.top_3_coins?.map((coin, index) => <Image src={coin} alt={`${category.name} top gainer ${index + 1}`} key={coin} width={28} height={28} />)
       },
       {
         header: '24h Change',

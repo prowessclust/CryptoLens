@@ -9,7 +9,7 @@ import CoinsPagination from "@/components/CoinsPagination";
 const Coins = async ({ searchParams }: NextPageProps) => {
   const { page } = await searchParams;
 
-  const currentPage = Number(page) || 1;
+  const currentPage = Math.max(1, Number(page) || 1);
   const perPage = 10;
 
   const coinsData = await fetcher<CoinMarketData[]>("/coins/markets", {
@@ -81,7 +81,7 @@ const Coins = async ({ searchParams }: NextPageProps) => {
   return (
     <main id="coins-page">
       <div className="content">
-        <h4>All Coins</h4>
+        <h4 className='ml-1.5'>All Coins</h4>
 
         <DataTable
           tableClassName="coins-table"
