@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CryptoLens
 
-## Getting Started
+A real-time cryptocurrency tracking application built with Next.js that provides live market data, price charts, and trending coins using the CoinGecko API.
 
-First, run the development server:
+## Key Features
 
+- **Live Market Data**: Real-time cryptocurrency prices and market statistics
+- **Interactive Charts**: Candlestick charts with multiple timeframes (1D, 7D, 30D, 90D, 1Y)
+- **Trending Coins**: Track the most popular cryptocurrencies with 24h price changes
+- **Coin Categories**: Browse cryptocurrencies by categories
+- **Currency Converter**: Convert between different cryptocurrencies
+- **Responsive Design**: Modern UI with dark mode support
+
+## Tech Stack
+
+**Frontend:**
+- Next.js 16.1.1 (React 19.2.3)
+- TypeScript
+- TailwindCSS 4
+- Radix UI components
+- Lucide React icons
+
+**Libraries:**
+- `lightweight-charts` - Interactive candlestick charts
+- `query-string` - URL query parsing
+- `class-variance-authority` & `clsx` - Styling utilities
+
+**API:**
+- CoinGecko Demo API
+
+## Setup & Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd cryptolens
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables**
+   
+   Create a `.env.local` file in the root directory:
+   ```env
+   COINGECKO_BASE_URL=https://api.coingecko.com/api/v3
+   COINGECKO_API_KEY=your_api_key_here
+   ```
+
+4. **Get a CoinGecko API key**
+   - Sign up at [CoinGecko](https://www.coingecko.com/en/api)
+   - Get your free demo API key
+   - Add it to `.env.local`
+
+## How to Run the Project
+
+**Development mode:**
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Visit [http://localhost:3000](http://localhost:3000)
+
+**Production build:**
+```bash
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Linting and formatting:**
+```bash
+npm run lint          # Check for linting errors
+npm run lint:fix      # Auto-fix linting errors
+npm run format        # Format code with Prettier
+npm run format:check  # Check code formatting
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+cryptolens/
+├── app/                    # Next.js app directory
+│   ├── coins/             # Coin detail pages
+│   ├── api/               # API routes
+│   ├── page.tsx           # Home page
+│   └── layout.tsx         # Root layout
+├── components/            # React components
+│   ├── home/             # Home page components
+│   └── ui/               # Reusable UI components
+├── lib/                   # Utility functions
+│   └── coingecko.actions.ts  # API fetching logic
+├── constants.ts           # App constants
+└── type.d.ts             # TypeScript type definitions
+```
 
-## Learn More
+## Important Notes
 
-To learn more about Next.js, take a look at the following resources:
+- **API Rate Limits**: CoinGecko Demo API has rate limits. The app implements 60-second revalidation to minimize requests.
+- **Supported Chart Periods**: 1D, 7D, 30D, 90D, 1Y (3M and MAX are not supported by the demo API)
+- **Environment Variables**: Ensure `.env.local` is properly configured before running the app.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Future Improvements
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Add user authentication and portfolio tracking
+- Implement price alerts and notifications
+- Add more chart types (line, area)
+- Support for multiple fiat currencies
+- Historical data comparison tools
