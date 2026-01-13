@@ -65,7 +65,7 @@ export async function getPools(
 
       return poolData.data?.[0] ?? fallback;
     } catch (error) {
-      console.log(error);
+      console.error('Failed to fetch pools by network/contract:', error);
       return fallback;
     }
   }

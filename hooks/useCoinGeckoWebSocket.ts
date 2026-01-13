@@ -9,7 +9,7 @@ export const useCoinGeckoWebSocket = ({
   liveInterval,
 }: UseCoinGeckoWebSocketProps): UseCoinGeckoWebSocketReturn => {
   const wsRef = useRef<WebSocket | null>(null);
-  const subscribed = useRef(<Set<string>>new Set());
+  const subscribed = useRef<Set<string>>(new Set());
 
   const [price, setPrice] = useState<ExtendedPriceData | null>(null);
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -24,14 +24,25 @@ export const useCoinGeckoWebSocket = ({
     const send = (payload: Record<string, unknown>) => ws.send(JSON.stringify(payload));
 
     const handleMessage = (event: MessageEvent) => {
-      const msg: WebSocketMessage = JSON.parse(event.data);
+      let msg: WebSocketMessage;
+      try {
+        msg = JSON.parse(event.data);
+      } catch {
+        console.error('Failed to parse WebSocket message:', event.data);
+        return;
+      }
       if (msg.type === 'ping') {
         send({ type: 'pong' });
         return;
       }
       if(msg.type === 'confirm_subscription') {
-        const { channel } = JSON.parse(msg?.identifier ?? '')
-        subscribed.current.add(channel);
+        let channel: string;
+        try {
+          channel = JSON.parse(msg?.identifier ?? '{}').channel;
+        } catch {
+          return;
+        }
+        if (channel) subscribed.current.add(channel);
       }
       //price update
       if(msg.c === 'C1') {
@@ -118,21 +129,22 @@ export const useCoinGeckoWebSocket = ({
 
       unsubscribeAll();
       subscribe('CGSimplePrice', { coin_id: [coinId], action: 'set_tokens'})
+      const poolAddress = poolId.replace('_', ':');
+      //subscribe to onchain trades
+      if(poolAddress) {
+        subscribe('OnchainTrade', {
+          'network_id:pool_addresses': [poolAddress],
+          action: 'set_pools',
+        });
+        subscribe('OnchainOHLCV', {
+          'network_id:pool_addresses': [poolAddress],
+          interval: liveInterval,
+          action: 'set_pools',
+        })
+      }
     })
-    //subscribe to onchain trades
+    
 
-    const poolAddress = poolId.replace('_', ':');
-    if(poolAddress) {
-      subscribe('OnchainTrade', {
-        'network_id:pool_addresses': [poolAddress],
-        action: 'set_pools',
-      });
-      subscribe('OnchainOHLCV', {
-        'network_id:pool_addresses': [poolAddress],
-        interval: liveInterval,
-        action: 'set_pools',
-      })
-    }
   }, [
     coinId, poolId, isWsReady, liveInterval
   ]);

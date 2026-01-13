@@ -39,7 +39,7 @@ const CandlestickChart = ({
       });
 
     
-    startTransition(async () => {
+    startTransition(() => {
       setOhlcData(newData ?? []);
     });
       

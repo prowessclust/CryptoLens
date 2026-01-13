@@ -21,11 +21,16 @@ const page = async ({ params }: NextPageProps) => {
 
   const platform = coinData.asset_platform_id? coinData.detail_platforms?.[coinData.asset_platform_id] : null;
 
-  const network = platform?.geckoterminal_url.split('/')[3] || null;
+  const network = platform?.geckoterminal_url.split('/')[3] ?? null;
   const contractAddress = platform?.contract_address || null;
 
   //pool identifies which market app should subscribe to get real time updates
-  const pool = await getPools(id, network, contractAddress);
+  let pool: { id: string } | null = null;
+  try {
+    pool = await getPools(id, network, contractAddress);
+  } catch (error) {
+    console.error('Failed to fetch pool data:', error);
+  }
 
   const coinDetails = [
     {
@@ -63,7 +68,7 @@ const page = async ({ params }: NextPageProps) => {
   return (
     <main id="coin-details-page">
       <section className="primary">
-        <LiveDataWrapper coinId={id} poolId={pool.id} coin={coinData} coinOHLCData={coinOHLCData}>
+          <LiveDataWrapper coinId={id} poolId={pool?.id ?? ''} coin={coinData} coinOHLCData={coinOHLCData}>
           <h4>Exchange Listings</h4>
         </LiveDataWrapper>
       </section>
@@ -80,7 +85,7 @@ const page = async ({ params }: NextPageProps) => {
               <li key={index}>
                 <p className={label}>{label}</p>
 
-                {link ? (
+                {link && link.trim() !== '' ? (
                   <div className="link">
                     <Link href={link} target="_blank">
                       {linkText || label}
