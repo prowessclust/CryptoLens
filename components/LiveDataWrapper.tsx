@@ -77,7 +77,7 @@ const LiveDataWrapper = ({ children, coinId, poolId, coin, coinOHLCData }: LiveD
       </div>
       <Separator className="divider" />
 
-      {tradeColumns && (
+      {/* {tradeColumns && (
         <div className="trades">
           <h4>Recent Trades</h4>
           <DataTable
@@ -87,7 +87,7 @@ const LiveDataWrapper = ({ children, coinId, poolId, coin, coinOHLCData }: LiveD
             tableClassName="trades-table"
             />
         </div>
-      )}
+      )} */}
     </section>
   )
 }

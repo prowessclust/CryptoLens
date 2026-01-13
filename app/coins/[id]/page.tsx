@@ -103,7 +103,7 @@ const page = async ({ params }: NextPageProps) => {
 
           </ul>
         </div>
-        <p>Top Gainers & Losers</p>
+        {/* <p>Top Gainers & Losers</p> */}
       </section>
     </main>
   )
